@@ -1,0 +1,111 @@
+ 
+body {
+	font-family: Georgia,'Times New Roman',times,serif;
+	font-size: 14px;
+}
+
+#all {
+	width: 900px;
+	border: 1px solid #333;
+	margin: auto;
+}
+
+#menu {
+	font-size: 16px;
+	padding: 5px;
+	background-color: #333;
+	color: #FFF;
+}
+
+#menu a {
+	color: gold;
+	text-decoration: none;
+	font-weight: bold;
+}
+#menu a:hover {	
+	color: #FFC;
+}
+
+#main {
+	padding: 10px;
+}
+
+#errors {
+	margin: 10px;
+	background-color: #800;
+	color: #FFF;
+}
+
+#errors p {
+	background-color: #500;
+	margin: 0px;
+	padding: 5px;
+	font-weight: bold;
+}
+
+#errors ul {
+	padding: 10px 35px;
+}
+
+#errors li {
+	padding-bottom: 5px;
+}
+
+#debug {
+	padding: 5px;
+	border-top: 1px dotted #333;
+}
+
+#debug .title {
+	margin: 0px;
+	padding: 5px;
+	font-weight: bold;
+}
+
+.formgen_bg {
+	
+}
+
+.formgen_table {
+	
+}
+
+.formgen_table td {
+	padding: 5px;
+	margin: 1px;
+	background-color: #EEE;
+}
+
+.formgen_table th {
+	padding: 5px;
+	margin: 1px;
+	background-color: #666;
+	color: #FFF;
+}
+
+.formgen_bg {
+	background-color: #999;
+}
+
+.formgen_title {
+	font-weight: bold;
+	text-align: right;
+}
+
+.formgen_submit {
+	background-color: #666;
+}
+
+.formgen_submit input {
+	padding: 5px;
+	margin: 5px;
+	cursor: pointer;
+}
+
+.captcha_title {
+	font-weight: bold;
+}
+
+.captcha_text {
+	
+}
