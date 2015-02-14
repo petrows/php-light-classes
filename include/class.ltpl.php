@@ -154,8 +154,7 @@ class ltpl
 		$f = fopen ($this->tpl_c_file, 'w');
 		if (!$f)
 		{
-			global_error('Enable to write compiled template!');
-			exit ();
+			exit ('Enable to write compiled template!');
 		}
 		fputs ($f, $file_out);
 		fclose ($f);

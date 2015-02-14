@@ -74,7 +74,7 @@
 	
 	function add_no_items ($text=false, $tags=true)
 	{
-		if (!$text) $text = lang('noitems');
+		if (!$text && function_exists('lang')) $text = lang('noitems');
 		if ($tags)	$text = '<div style="text-align:center;padding:15px;">'.$text.'</div>';
 		$this->table_data[][] = array ('data'=>$text, 'colspan'=>count($this->table_th_data), 'align'=>'center');
 	}
