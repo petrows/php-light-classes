@@ -1,5 +1,5 @@
 <?php
-/*
+/** @file
  * LForm - form generator class
  * 
  * Written by Peter, 
@@ -250,6 +250,8 @@ class lform
 			
 			return $out;
 		}
+		
+		return '<input type="'.$input['type'].'" name="'.@$input['name'].'" id="'.@$input['name'].'" '.$this->load_params($input).' value="'.$this->load_value($input).'" />';		
 	}
 
 	function load_params ($input)
@@ -315,7 +317,7 @@ class lform
 			}
 		}
 
-		# if (!isset($this->input[$input['c_id']]))
+		if (!isset($this->input[$input['c_id']])) $this->d_val[$input['c_id']] = @$input['value'];
 
 		return @$this->d_val[$input['c_id']];
 	}

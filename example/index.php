@@ -28,9 +28,12 @@ include ROOT_PATH.'/include/class.ltpl.php';
 class example_site
 {
 	public $errors = array();
+	public $mail_domains = array('gmail.com','petro.ws','mail.ru','mail.com','yahoo.com');
 	
 	function show()
 	{
+		mt_srand();
+		
 		$tpl = new ltpl('index');
 		
 		$main = ''; # Some out data will be here
@@ -126,7 +129,7 @@ class example_site
 		{
 			if (@$_SESSION['captcha_keystring'] !== $_POST['captcha'])
 			{
-				$this->errors[] = 'Wrong captcha!';
+				#$this->errors[] = 'Wrong captcha!';
 			}
 			
 			$count = 50;
@@ -139,11 +142,32 @@ class example_site
 				
 				if ($json_data)
 				{
-
+					# Clear old data
+					ldb_query('TRUNCATE TABLE `user`');
+					$added = 0;
+					foreach ($json_data['results'] as $user) 
+					{
+						$user_db = array();
+						$user_db['name'] = ucwords($user['user']['name']['first'].' '.$user['user']['name']['last']);
+						
+						$mail = explode('@', $user['user']['email']);
+						$mail = $mail[0] . '@' . $this->mail_domains[mt_rand(0, count($this->mail_domains)-1)];
+						$user_db['mail'] = $mail;
+						
+						ldb_insert('user', $user_db);
+						$added++;
+					}
+					
+					# Result page
+					$tpl = new ltpl('users_added');
+					$tpl->v('count', $added);
+					return $tpl->get();					
 				} else {
 					$this->errors[] = 'JSON request error';
 				}
 				print_r($json_data);
+				
+				
 			}
 		}
 		$fg = new lform();

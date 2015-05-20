@@ -1,5 +1,5 @@
 <?php
-/*
+/** @file
  * LDB database layer class
  * 
  * Written by Peter, 

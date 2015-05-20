@@ -1,5 +1,5 @@
 <?php
-/*
+/** @file
  * LTable class. 
  * 
  * Written by Peter, 
@@ -32,9 +32,9 @@
 	public $noutems_auto	= true;			# Add 'No items to show' auto, when no items added
 	
 	# Internal
-	public $table_data = array ();
-	public $table_th_data = array ();
-	public $tabe_tr_params = array ();
+	private $table_data = array ();
+	private $table_th_data = array ();
+	private $tabe_tr_params = array ();
 	
 	function add_row_simple ()
 	{

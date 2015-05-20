@@ -1,5 +1,5 @@
 <?php
-/*
+/** @file
  * LTPL class. 
  * 
  * Written by Peter, 
