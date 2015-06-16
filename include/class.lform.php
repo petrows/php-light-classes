@@ -45,12 +45,12 @@ class lform
 
 	public $input = array ();
 
-	function cform ($use_input = false)
+	function __construct($use_input = false)
 	{
 		if (!$use_input)
-		$this->input = $_POST;
+			$this->input = $_REQUEST;
 		else
-		$this->input = $use_input;
+			$this->input = $use_input;
 	}
 
 	function add_input ($type, $title=false, $name=false, $value=false, $inp_ad=false)
@@ -202,16 +202,16 @@ class lform
 	}
 
 	function get_input ($input)
-	{
+	{		
 		if ($input['type'] == 'text' || $input['type'] == 'password')
-		return '<input type="'.$input['type'].'" name="'.@$input['name'].'" id="'.@$input['name'].'" '.$this->load_params($input).' value="'.$this->load_value($input).'" />';
+			return '<input type="'.$input['type'].'" name="'.@$input['name'].'" id="'.@$input['name'].'" '.$this->load_params($input).' value="'.$this->load_value($input).'" />';
 		
 		if ($input['type'] == 'submit')
-		return '<input type="'.$input['type'].'" name="'.@$input['name'].'" id="'.@$input['name'].'" '.$this->load_params($input).' value="  '.$input['value'].'  " />';
+			return '<input type="'.$input['type'].'" name="'.@$input['name'].'" id="'.@$input['name'].'" '.$this->load_params($input).' value="  '.$input['value'].'  " />';
 
 		//dbg ($input);
 		if ($input['type'] == 'textarea')
-		return '<textarea name="'.@$input['name'].'" id="'.@$input['name'].'" '.$this->load_params($input).'>'.$this->load_value($input).'</textarea>';
+			return '<textarea name="'.@$input['name'].'" id="'.@$input['name'].'" '.$this->load_params($input).'>'.$this->load_value($input).'</textarea>';
 
 		if ($input['type'] == 'checkbox')
 		{
@@ -317,7 +317,7 @@ class lform
 			}
 		}
 
-		if (!isset($this->input[$input['c_id']])) $this->d_val[$input['c_id']] = @$input['value'];
+		if (!isset($this->d_val[$input['c_id']])) $this->d_val[$input['c_id']] = @$input['value'];
 
 		return @$this->d_val[$input['c_id']];
 	}
