@@ -48,9 +48,17 @@ class lform
 	function __construct($use_input = false)
 	{
 		if (!$use_input)
-			$this->input = $_REQUEST;
+			$this->input = $_POST;
 		else
 			$this->input = $use_input;
+	}
+	
+	function use_input($use = true)
+	{
+		if (!$use)
+		{
+			$this->input = array();
+		}
 	}
 
 	function add_input ($type, $title=false, $name=false, $value=false, $inp_ad=false)
