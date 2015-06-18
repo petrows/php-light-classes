@@ -88,6 +88,12 @@ class lform
 		$this->add_input ('select', $title, $name, $def_select, array('values'=>$values));
 	}
 	
+	function add_multiselect ($title, $name, $values, $def_select=false)
+	{
+		$this->add_input ('select', $title, $name, $def_select, array('values'=>$values));
+		$this->add_input_params (array('multiple'=>'multiple'));
+	}
+	
 	function add_title ($title)
 	{
 		$this->add_input ('title', $title);
@@ -243,10 +249,17 @@ class lform
 			$out = '';
 			$val = $this->load_value($input);
 			
-			$out .= '<select name="'.@$input['name'].'" id="'.@$input['name'].'" '.$this->load_params($input).' >';
+			$out .= '<select name="'.@$input['name'].(isset($this->d_add[$input['c_id']]['multiple'])?'[]':'').'" id="'.@$input['name'].'" '.$this->load_params($input).' >';
 			foreach ($input['inp_ad']['values'] as $k=>$v)
 			{
-				$out .= '<option value="'.$k.'"'.($val==$k?' selected="selected"':'').'>'.$v.'</option>';
+				$is_sel = false;
+				if (is_array($val))
+				{
+					$is_sel = in_array($k, $val);
+				} else {
+					$is_sel = $val==$k;
+				}
+				$out .= '<option value="'.$k.'"'.($is_sel?' selected="selected"':'').'>'.$v.'</option>';
 			}
 			
 			$out .= '</select> ';
@@ -321,7 +334,8 @@ class lform
 			{
 				$this->d_val[$input['c_id']] = $input['value'];
 			} else {
-				$this->d_val[$input['c_id']] = htmlspecialchars($this->input[$input['name']]);
+				$this->d_val[$input['c_id']] = $this->input[$input['name']];				
+				if (is_string($this->d_val[$input['c_id']])) $this->d_val[$input['c_id']] = htmlspecialchars ($this->d_val[$input['c_id']]);
 			}
 		}
 
