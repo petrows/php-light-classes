@@ -373,6 +373,16 @@ class ldb
 		return $driver->error()?false:$driver->insert_id();
 	}
 
+	function replace ($table, $db_data)
+	{
+		$driver = $this->driver();
+		if (!$driver) return;
+
+		$query = $driver->construct_replace($table,$db_data);
+		$res = $this->query($query);
+		return $driver->error()?false:$driver->insert_id();
+	}
+
 	function insert_id ()
 	{
 		$driver = $this->driver();
@@ -447,6 +457,12 @@ function ldb_insert ($table, $db_data)
 {
 	$core = ldb::get_instance();
 	return $core->insert($table, $db_data);
+}
+
+function ldb_replace ($table, $db_data)
+{
+	$core = ldb::get_instance();
+	return $core->replace($table, $db_data);
 }
 
 function ldb_insert_id ()
@@ -582,7 +598,8 @@ abstract class ldb_driver
 	function construct_select ($table,$what=false,$where=false) {}
 	function construct_select_one ($table, $what, $id, $id_text='id') {}
 	function construct_insert ($table,$db_data) {}
-	function construct_update_id ($table,$id,$db_data,$id_text='id',$no_quote=array()) {}
+	function construct_replace ($table,$db_data) {}
+	function construct_update_id ($table,$id,$db_data,$id_text='id',$no_quote=array()) {}	
 	function construct_update_exp ($table,$where,$no_quote) {}
 	function construct_delete ($table,$what,$where,$no_quote) {}
 }
@@ -735,6 +752,31 @@ class ldb_mysqli extends ldb_driver
 	function construct_insert($table, $db_data)
 	{
 		$query = 'INSERT INTO ';
+		if (strpos($table,'`')===false)
+		{
+			# Quote our staff
+			$table = '`'.$table.'`';
+		}
+		$query .= $table.' ';
+
+		$ins_index = array ();
+		$ins_data = array ();
+
+		foreach ($db_data as $k=>$v)
+		{
+			$ins_index[] = '`'.$k.'`';
+			if (!(is_int($v)||is_float($v)))
+				$v = '\''.$this->escape($v).'\'';
+			$ins_data[] = $v;
+		}
+
+		$query .= '('.implode(',',$ins_index).') VALUES ('.implode(',',$ins_data).')';
+		return $query;
+	}
+
+	function construct_replace($table, $db_data)
+	{
+		$query = 'REPLACE INTO ';
 		if (strpos($table,'`')===false)
 		{
 			# Quote our staff
@@ -940,6 +982,31 @@ class ldb_mysql extends ldb_driver
 	function construct_insert($table, $db_data)
 	{
 		$query = 'INSERT INTO ';
+		if (strpos($table,'`')===false)
+		{
+			# Quote our staff
+			$table = '`'.$table.'`';
+		}
+		$query .= $table.' ';
+
+		$ins_index = array ();
+		$ins_data = array ();
+
+		foreach ($db_data as $k=>$v)
+		{
+			$ins_index[] = '`'.$k.'`';
+			if (!(is_int($v)||is_float($v)))
+				$v = '\''.$this->escape($v).'\'';
+			$ins_data[] = $v;
+		}
+
+		$query .= '('.implode(',',$ins_index).') VALUES ('.implode(',',$ins_data).')';
+		return $query;
+	}
+
+	function construct_replace($table, $db_data)
+	{
+		$query = 'REPLACE INTO ';
 		if (strpos($table,'`')===false)
 		{
 			# Quote our staff
